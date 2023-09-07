@@ -4,6 +4,9 @@ import express from "express";
 import mongoose from "mongoose";
 import morgan from "morgan";
 
+// Routers imports
+import ProjectRouter from "./routes/project/project.js";
+
 // Config
 process.env.NODE_ENV = "development";
 
@@ -37,6 +40,8 @@ async function main() {
    app.use(express.urlencoded({ extended: true }));
 
    // Routes
+   app.use("/api/portfolio/projects", ProjectRouter);
+
    app.get("/healthcheck", (req, res) => {
       res.status(200).json({ status: "OK :)" });
    });
