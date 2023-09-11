@@ -45,11 +45,11 @@ const successResponse = (
 // Fetch all projects
 export function getAllProjects(req, res) {
    try {
-      let sortByDate = req.query.sortByDate;
+      let sortByDate = req.query?.sortByDate;
       sortByDate = sortByDate === "asc" ? 1 : sortByDate === "des" ? -1 : null;
-      let sortByVC = req.query.sortByVC;
+      let sortByVC = req.query?.sortByVC;
       sortByVC = sortByVC === "asc" ? 1 : sortByVC === "des" ? -1 : null;
-      let limit = req.query.limit;
+      let limit = req.query?.limit;
       limit = limit === "all" ? null : parseInt(limit) ? parseInt(limit) : 5;
 
       Project.find()
@@ -96,7 +96,7 @@ export function getAllProjects(req, res) {
 // Fetch one specific project
 export function getProject(req, res) {
    try {
-      const id = req.params.id;
+      const id = req.params?.id;
       Project.findById(id)
          .then(project => {
             if (!project) {
@@ -157,7 +157,7 @@ export function newProject(req, res) {
          version,
       } = req.body;
 
-      const descriptionMD = !req.file ? null : `uploads/${req.file.filename}`;
+      const descriptionMD = !req.file ? null : `uploads/${req.file?.filename}`;
 
       const parsedLinks = JSON.parse(`[${links}]`);
       const parsedTechnologies = JSON.parse(`[${technologies}]`);
@@ -214,31 +214,31 @@ export function newProject(req, res) {
 // Update project
 export function updateProject(req, res) {
    try {
-      const id = req.params.id;
-      const descriptionMD = !req.file ? null : `uploads/${req.file.filename}`;
+      const id = req.params?.id;
+      const descriptionMD = !req.file ? null : `uploads/${req.file?.filename}`;
 
-      const parsedLinks = JSON.parse(`[${req.body.links}]`);
-      const parsedTechnologies = JSON.parse(`[${req.body.technologies}]`);
+      const parsedLinks = JSON.parse(`[${req.body?.links}]`);
+      const parsedTechnologies = JSON.parse(`[${req.body?.technologies}]`);
 
       const updateData = {
-         author: req.body.author,
-         carousol: req.body.carousol,
-         codeName: req.body.codeName,
-         description: req.body.description,
+         author: req.body?.author,
+         carousol: req.body?.carousol,
+         codeName: req.body?.codeName,
+         description: req.body?.description,
          descriptionMD: descriptionMD,
-         endDate: req.body.endDate,
-         isVisible: req.body.isVisible,
-         license: req.body.license,
+         endDate: req.body?.endDate,
+         isVisible: req.body?.isVisible,
+         license: req.body?.license,
          links: parsedLinks,
-         position: req.body.position,
-         projectID: req.body.projectID,
-         startDate: req.body.startDate,
-         status: req.body.status,
-         subtitle: req.body.subtitle,
-         thumbnail: req.body.thumbnail,
+         position: req.body?.position,
+         projectID: req.body?.projectID,
+         startDate: req.body?.startDate,
+         status: req.body?.status,
+         subtitle: req.body?.subtitle,
+         thumbnail: req.body?.thumbnail,
          technologies: parsedTechnologies,
-         title: req.body.title,
-         version: req.body.version,
+         title: req.body?.title,
+         version: req.body?.version,
       };
 
       Project.findByIdAndUpdate(id, updateData, { new: true })

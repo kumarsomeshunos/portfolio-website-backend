@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
 
 // Markdown filter setup
 const fileFilter = function (req, file, callback) {
-   if (file.mimetype.startsWith("text/")) {
+   if (file.mimetype?.startsWith("text/")) {
       callback(null, true);
    } else {
       callback(new Error("Only markdown files are allowed"), false);
