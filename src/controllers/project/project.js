@@ -108,6 +108,11 @@ export function getProject(req, res) {
                   404,
                );
             }
+            
+            // MD to HTML (Temp) 
+            const mkdn = fs.readFileSync(project.descriptionMD, 'utf8');
+            project.descriptionMD = mkdn;
+            
             return successResponse(res, "Project details :)", null, 7, 200, {
                data: project,
             });
