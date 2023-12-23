@@ -3,6 +3,7 @@
    "version": "1.0.0",
    "description": "Backend for portfolio website of Somesh Kumar",
    "main": "src/index.js",
+   "type": "module",
    "scripts": {
       "build": "./node_modules/.bin/babel src --out-dir lib",
       "dev": "nodemon src/index.js",

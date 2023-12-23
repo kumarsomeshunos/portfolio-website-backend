@@ -4,7 +4,15 @@ import multer from "multer";
 // Initialize multer diskstorage
 const storage = multer.diskStorage({
    destination: function (req, file, callback) {
-      callback(null, "uploads/");
+      // console.log(req.originalUrl);
+      if (req.originalUrl.startsWith("/api/portfolio/base/")) {
+         callback(null, "uploads/base/introduction/");
+      } else if (req.originalUrl.startsWith("/api/portfolio/projects/")) {
+         callback(null, "uploads/");
+      } else {
+         callback(null, "uploads/");
+         // callback(new Error("Invalid upload path"), false);
+      }
    },
    filename: function (req, file, callback) {
       callback(null, `${Date.now()}-${file.originalname}`);

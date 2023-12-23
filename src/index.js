@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 // Routers imports
 import ProjectRouter from "./routes/project/project.js";
 import UserRouter from "./routes/user/user.js";
+import BaseRouter from "./routes/base/base.js";
 
 // Config
 process.env.NODE_ENV = "development";
@@ -37,15 +38,21 @@ async function main() {
       });
 
    // Middlewares
-      // Enable CORS for all routes
+   // Enable CORS for all routes
    app.use((req, res, next) => {
-      res.header('Access-Control-Allow-Origin', '*'); // Replace * with your allowed origins
-      res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-      res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-      res.header('Access-Control-Allow-Credentials', 'true');
+      res.header("Access-Control-Allow-Origin", "*"); // Replace * with your allowed origins
+      res.header(
+         "Access-Control-Allow-Methods",
+         "GET, POST, PUT, DELETE, OPTIONS",
+      );
+      res.header(
+         "Access-Control-Allow-Headers",
+         "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+      );
+      res.header("Access-Control-Allow-Credentials", "true");
       next();
    });
-   
+
    app.use(morgan(process.env?.LOGGING_FORMAT));
    app.use(express.json());
    app.use(express.urlencoded({ extended: true }));
@@ -62,6 +69,7 @@ async function main() {
    // Routes
    app.use("/api/portfolio/projects", ProjectRouter);
    app.use("/api/portfolio/users", UserRouter);
+   app.use("/api/portfolio/base", BaseRouter);
 
    app.get("/healthcheck", (req, res) => {
       res.status(200).json({ status: "OK :)" });
