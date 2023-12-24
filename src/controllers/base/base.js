@@ -1,5 +1,6 @@
 // All imports
 import Base from "./../../models/base/base.js";
+import { moviesAndShows } from "./../../services/plex/moviesAndShows.js";
 
 // MD to HTML ([temp] requirements)
 import fs from "fs";
@@ -46,8 +47,10 @@ const successResponse = (
 // CRUD
 
 // Fetch all bases
-export function getAllBases(req, res) {
+export async function getAllBases(req, res) {
    try {
+      // Fetch plex data
+      const plexData = await moviesAndShows();
       // Spits out only one base (the latest one) if parameter is set to all then it spits out all the bases
       let sortByDate = req.query?.sortByDate;
       sortByDate = sortByDate === "asc" ? 1 : sortByDate === "des" ? -1 : -1;
@@ -75,6 +78,7 @@ export function getAllBases(req, res) {
             return successResponse(res, "Bases list :)", null, 2, 200, {
                count: bases.length,
                data: bases,
+               plexData: plexData,
             });
          })
          .catch(error => {
@@ -100,9 +104,11 @@ export function getAllBases(req, res) {
 }
 
 // Fetch one specific base
-export function getBase(req, res) {
+export async function getBase(req, res) {
    try {
       const id = req.params?.id;
+      // Fetch plex data
+      const plexData = await moviesAndShows();
       Base.findById(id)
          .then(base => {
             if (!base) {
@@ -121,6 +127,7 @@ export function getBase(req, res) {
 
             return successResponse(res, "Base details :)", null, 37, 200, {
                data: base,
+               plexData: plexData,
             });
          })
          .catch(error => {
