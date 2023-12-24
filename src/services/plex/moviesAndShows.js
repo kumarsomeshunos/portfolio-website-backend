@@ -1,20 +1,25 @@
+import axios from "axios";
+
 export async function moviesAndShows() {
    // Variables
    let plexBaseUrl = process.env.PLEX_BASE_URL;
    let plexToken = process.env.PLEX_TOKEN;
 
    // Header for plex
-   let plexHeaders = {
+   const plexHeaders = {
       "X-Plex-Token": plexToken,
+      "Content-Type": "application/json",
       Accept: "application/json",
    };
 
    let TMDBBaseUrl = process.env?.TMDB_API_BASE_URL;
    let TMDBImageBaseUrl = process.env?.TMDB_API_IMAGE_BASE_URL;
 
-   let TMDBHeaders = {
-      Accept: "application/json",
+   // Header for TMDB
+   const TMDBHeaders = {
       Authorization: process.env?.TMDB_AUTHORIZATION_KEY,
+      "Content-Type": "application/json",
+      Accept: "application/json",
    };
 
    let extractTags = items => items.map(item => item.tag);
@@ -79,45 +84,46 @@ export async function moviesAndShows() {
    };
 
    // TMDB Data
-   //    let tmdbData = async query => {
-   //       try {
-   //          let encodedQuery = encodeURIComponent(query);
-   //          let tmdb = await fetch(
-   //             `${TMDBBaseUrl}/search/movie?query=${encodedQuery}&include_adult=true&language=en-US&page=1`,
-   //             { headers: TMDBHeaders },
-   //          );
-
-   //          if (tmdb.status !== 200) {
-   //             console.error("5");
-   //             return null;
-   //          }
-   //          let TMDBDataJson = await tmdb.json();
-   //          return TMDBDataJson;
-   //       } catch (error) {
-   //          console.error("6");
-   //          return null;
-   //       }
-   //    };
+   let tmdbData = async query => {
+      try {
+         let encodedQuery = encodeURIComponent(query);
+         await axios
+            .get(
+               `${TMDBBaseUrl}/search/movie?query=${encodedQuery}&include_adult=true&language=en-US&page=1`,
+               { headers: TMDBHeaders },
+            )
+            .then(response => {
+               if (response.status !== 200) {
+                  return null;
+               }
+               return response.data;
+            })
+            .catch(error => {
+               return null;
+            });
+      } catch (error) {
+         return null;
+      }
+   };
 
    // Fetch all movies
    try {
-      let plexData = await fetch(`${plexBaseUrl}/status/sessions`, {
+      let response = await axios.get(`${plexBaseUrl}/status/sessions`, {
          headers: plexHeaders,
       });
-      if (plexData.status !== 200) {
-         console.log("1");
+
+      if (response.status !== 200) {
          return null;
       }
-      let plexDataJson = await plexData.json();
+      let plexDataJson = response.data;
       if (plexDataJson.MediaContainer.size > 0) {
          let plexMetadata = plexDataJson.MediaContainer.Metadata[0];
 
          if (plexMetadata.type === "movie" || plexMetadata.type === "episode") {
             let plexMoviesAndShowsData = processMetadata(plexMetadata);
-            let tmdb = null;
-            // let tmdb = await tmdbData(plexMoviesAndShowsData.title);
-            // plexMoviesAndShowsData.backdropPath = `${TMDBImageBaseUrl}/t/p/original${tmdb?.results[0]?.backdrop_path}`;
-            // plexMoviesAndShowsData.posterPath = `${TMDBImageBaseUrl}/t/p/original${tmdb?.results[0]?.poster_path}`;
+            let tmdb = await tmdbData(plexMoviesAndShowsData.title);
+            plexMoviesAndShowsData.backdropPath = `${TMDBImageBaseUrl}/t/p/original${tmdb?.results[0]?.backdrop_path}`;
+            plexMoviesAndShowsData.posterPath = `${TMDBImageBaseUrl}/t/p/original${tmdb?.results[0]?.poster_path}`;
             plexMoviesAndShowsData.id = tmdb?.results[0]?.id;
             plexMoviesAndShowsData.adult = tmdb?.results[0]?.adult;
             plexMoviesAndShowsData.originalLanguage =
@@ -142,11 +148,10 @@ export async function moviesAndShows() {
             return plexMoviesAndShowsData;
          }
       } else {
-         let plexData = await fetch(`${plexBaseUrl}/library/onDeck`, {
+         let response = await axios.get(`${plexBaseUrl}/library/onDeck`, {
             headers: plexHeaders,
          });
-         let plexDataJson = await plexData.json();
-
+         let plexDataJson = response.data;
          if (plexDataJson.MediaContainer.size > 0) {
             const plexMetadata = plexDataJson.MediaContainer.Metadata[0];
 
@@ -155,10 +160,9 @@ export async function moviesAndShows() {
                plexMetadata.type === "episode"
             ) {
                const plexMoviesAndShowsData = processMetadata(plexMetadata);
-               const tmdb = null;
-               //    const tmdb = await tmdbData(plexMoviesAndShowsData.title);
-               //    plexMoviesAndShowsData.backdropPath = `${imageBaseUrl}/t/p/original${tmdb?.results[0]?.backdrop_path}`;
-               //    plexMoviesAndShowsData.posterPath = `${imageBaseUrl}/t/p/original${tmdb?.results[0]?.poster_path}`;
+               const tmdb = await tmdbData(plexMoviesAndShowsData.title);
+               plexMoviesAndShowsData.backdropPath = `${imageBaseUrl}/t/p/original${tmdb?.results[0]?.backdrop_path}`;
+               plexMoviesAndShowsData.posterPath = `${imageBaseUrl}/t/p/original${tmdb?.results[0]?.poster_path}`;
                plexMoviesAndShowsData.id = tmdb?.results[0]?.id;
                plexMoviesAndShowsData.adult = tmdb?.results[0]?.adult;
                plexMoviesAndShowsData.originalLanguage =
@@ -181,15 +185,14 @@ export async function moviesAndShows() {
                   ? plexMoviesAndShowsData.summary
                   : (plexMoviesAndShowsData.summary =
                        plexMoviesAndShowsData.overview);
-               return processMetadata(plexMetadata);
+               return plexMoviesAndShowsData;
             }
          } else {
-            let plexData = await fetch(
+            let response = await axios.get(
                `${plexBaseUrl}/status/sessions/history/all`,
                { headers: plexHeaders },
             );
-            let plexDataJson = await plexData.json();
-
+            let plexDataJson = response.data;
             if (plexDataJson.MediaContainer.size > 0) {
                const plexMetadata =
                   plexDataJson.MediaContainer.Metadata[
@@ -200,10 +203,9 @@ export async function moviesAndShows() {
                   plexMetadata.type === "episode"
                ) {
                   const plexMoviesAndShowsData = processMetadata(plexMetadata);
-                  const tmdb = null;
-                  //   const tmdb = await tmdbData(plexMoviesAndShowsData.title);
-                  //   plexMoviesAndShowsData.backdropPath = `${imageBaseUrl}/t/p/original${tmdb?.results[0]?.backdrop_path}`;
-                  //   plexMoviesAndShowsData.posterPath = `${imageBaseUrl}/t/p/original${tmdb?.results[0]?.poster_path}`;
+                  const tmdb = await tmdbData(plexMoviesAndShowsData.title);
+                  plexMoviesAndShowsData.backdropPath = `${imageBaseUrl}/t/p/original${tmdb?.results[0]?.backdrop_path}`;
+                  plexMoviesAndShowsData.posterPath = `${imageBaseUrl}/t/p/original${tmdb?.results[0]?.poster_path}`;
                   plexMoviesAndShowsData.id = tmdb?.results[0]?.id;
                   plexMoviesAndShowsData.adult = tmdb?.results[0]?.adult;
                   plexMoviesAndShowsData.originalLanguage =
@@ -226,14 +228,12 @@ export async function moviesAndShows() {
                      ? plexMoviesAndShowsData.summary
                      : (plexMoviesAndShowsData.summary =
                           plexMoviesAndShowsData.overview);
-                  return processMetadata(plexMetadata);
+                  return plexMoviesAndShowsData;
                }
             }
          }
       }
    } catch (error) {
-      console.log(error);
-      console.log("2");
       return null;
    }
 }

@@ -30,6 +30,7 @@
    },
    "homepage": "https://github.com/kumarsomeshunos/portfolio-website-backend#readme",
    "dependencies": {
+      "axios": "^1.6.2",
       "bcrypt": "^5.1.1",
       "cookie-parser": "^1.4.6",
       "core-js": "^3.32.2",
