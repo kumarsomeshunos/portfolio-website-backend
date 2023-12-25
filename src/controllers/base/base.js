@@ -1,6 +1,8 @@
 // All imports
 import Base from "./../../models/base/base.js";
-import { moviesAndShows } from "./../../services/plex/moviesAndShows.js";
+import { liveMoviesAndShows } from "../../services/plex/liveMoviesAndShows.js";
+import { deckMoviesAndShows } from "../../services/plex/deckMoviesAndShows.js";
+import { historyMoviesAndShows } from "../../services/plex/historyMoviesAndShows.js";
 
 // MD to HTML ([temp] requirements)
 import fs from "fs";
@@ -50,7 +52,14 @@ const successResponse = (
 export async function getAllBases(req, res) {
    try {
       // Fetch plex data
-      const plexData = await moviesAndShows();
+      // const plexData = await moviesAndShows();
+      let plexData = await liveMoviesAndShows();
+      if (!plexData) {
+         plexData = await deckMoviesAndShows();
+         if (!plexData) {
+            plexData = await historyMoviesAndShows();
+         }
+      }
       // Spits out only one base (the latest one) if parameter is set to all then it spits out all the bases
       let sortByDate = req.query?.sortByDate;
       sortByDate = sortByDate === "asc" ? 1 : sortByDate === "des" ? -1 : -1;
