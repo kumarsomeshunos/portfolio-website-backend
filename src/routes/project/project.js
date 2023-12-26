@@ -21,7 +21,7 @@ router.get("/:id", controller?.projectController?.getProject);
 router.post(
    "/new",
    isLoggedIn,
-   upload.single("filemd"),
+   upload.single("projectMD"),
    controller?.projectController?.newProject,
 );
 
@@ -29,7 +29,7 @@ router.post(
 router.patch(
    "/:id/update",
    isLoggedIn,
-   upload.single("filemd"),
+   upload.single("projectMD"),
    controller?.projectController?.updateProject,
 );
 

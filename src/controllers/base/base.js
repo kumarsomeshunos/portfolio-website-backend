@@ -52,14 +52,17 @@ const successResponse = (
 export async function getAllBases(req, res) {
    try {
       // Fetch plex data
-      // const plexData = await moviesAndShows();
-      let plexData = await liveMoviesAndShows();
-      if (!plexData) {
-         plexData = await deckMoviesAndShows();
-         if (!plexData) {
-            plexData = await historyMoviesAndShows();
-         }
-      }
+      // let plexData = await liveMoviesAndShows();
+      // if (!plexData) {
+      //    plexData = await deckMoviesAndShows();
+      //    if (!plexData) {
+      //       plexData = await historyMoviesAndShows();
+      //       if(!plexData) {
+      //          plexData = null;
+      //       }
+      //    }
+      // }
+      let plexData = null;
       // Spits out only one base (the latest one) if parameter is set to all then it spits out all the bases
       let sortByDate = req.query?.sortByDate;
       sortByDate = sortByDate === "asc" ? 1 : sortByDate === "des" ? -1 : -1;
@@ -117,7 +120,14 @@ export async function getBase(req, res) {
    try {
       const id = req.params?.id;
       // Fetch plex data
-      const plexData = await moviesAndShows();
+      // let plexData = await liveMoviesAndShows();
+      // if (!plexData) {
+      //    plexData = await deckMoviesAndShows();
+      //    if (!plexData) {
+      //       plexData = await historyMoviesAndShows();
+      //    }
+      // }
+      let plexData = null;
       Base.findById(id)
          .then(base => {
             if (!base) {
@@ -182,7 +192,7 @@ export function newBase(req, res) {
 
       const introductionMD = !req.file
          ? null
-         : `uploads/base/introduction/${req.file?.filename}`;
+         : `uploads/bases/introduction/${req.file?.filename}`;
 
       const parsedNavbarLinks = JSON.parse(`[${navbarLinks}]`);
       const parsedHeroButtons = JSON.parse(`[${heroButtons}]`);
@@ -243,7 +253,7 @@ export function updateBase(req, res) {
 
       const introductionMD = !req.file
          ? null
-         : `uploads/base/introduction/${req.file?.filename}`;
+         : `uploads/bases/introduction/${req.file?.filename}`;
 
       const parsedNavbarLinks = JSON.parse(`[${req.body?.navbarLinks}]`);
       const parsedHeroButtons = JSON.parse(`[${req.body?.heroButtons}]`);

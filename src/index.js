@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 import ProjectRouter from "./routes/project/project.js";
 import UserRouter from "./routes/user/user.js";
 import BaseRouter from "./routes/base/base.js";
+import BlogRouter from "./routes/blog/blog.js";
 
 // Config
 process.env.NODE_ENV = "development";
@@ -69,7 +70,8 @@ async function main() {
    // Routes
    app.use("/api/portfolio/projects", ProjectRouter);
    app.use("/api/portfolio/users", UserRouter);
-   app.use("/api/portfolio/base", BaseRouter);
+   app.use("/api/portfolio/bases", BaseRouter);
+   app.use("/api/portfolio/blogs", BlogRouter);
 
    app.get("/healthcheck", (req, res) => {
       res.status(200).json({ status: "OK :)" });

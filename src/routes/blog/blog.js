@@ -11,33 +11,33 @@ import { isLoggedIn } from "../../middlewares/auth/auth.js";
 // Config
 const router = express.Router();
 
-// Get all bases
-router.get("/", controller?.baseController?.getAllBases);
+// Get all blogs
+router.get("/", controller?.blogController?.getAllBlogs);
 
-// Get a specific base
-router.get("/:id", controller?.baseController?.getBase);
+// Get a specific blog
+router.get("/:id", controller?.blogController?.getBlog);
 
-// Create a new base
+// Create a new blog
 router.post(
    "/new",
    isLoggedIn,
-   upload.single("baseIntroductionMD"),
-   controller?.baseController?.newBase,
+   upload.single("blogMD"),
+   controller?.blogController?.newBlog,
 );
 
-// Update a base
+// Update a blog
 router.patch(
    "/:id/update",
    isLoggedIn,
-   upload.single("baseIntroductionMD"),
-   controller?.baseController?.updateBase,
+   upload.single("blogMD"),
+   controller?.blogController?.updateBlog,
 );
 
-// Delete a base
+// Delete a blog
 router.delete(
    "/:id/delete",
    isLoggedIn,
-   controller?.baseController?.deleteBase,
+   controller?.blogController?.deleteBlog,
 );
 
 export default router;

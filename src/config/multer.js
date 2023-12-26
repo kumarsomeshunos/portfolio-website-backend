@@ -6,9 +6,11 @@ const storage = multer.diskStorage({
    destination: function (req, file, callback) {
       // console.log(req.originalUrl);
       if (req.originalUrl.startsWith("/api/portfolio/base/")) {
-         callback(null, "uploads/base/introduction/");
+         callback(null, "uploads/bases/introduction/");
       } else if (req.originalUrl.startsWith("/api/portfolio/projects/")) {
-         callback(null, "uploads/");
+         callback(null, "uploads/projects/");
+      } else if (req.originalUrl.startsWith("/api/portfolio/blogs/")) {
+         callback(null, "uploads/blogs/");
       } else {
          callback(null, "uploads/");
          // callback(new Error("Invalid upload path"), false);

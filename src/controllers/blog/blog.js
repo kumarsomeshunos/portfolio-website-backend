@@ -1,5 +1,5 @@
 // All imports
-import Project from "./../../models/project/project.js";
+import Blog from "./../../models/blog/blog.js";
 
 // MD to HTML ([temp] requirements)
 import fs from "fs";
@@ -45,8 +45,8 @@ const successResponse = (
 
 // CRUD
 
-// Fetch all projects
-export function getAllProjects(req, res) {
+// Fetch all blogs
+export function getAllBlogs(req, res) {
    try {
       let sortByDate = req.query?.sortByDate;
       sortByDate = sortByDate === "asc" ? 1 : sortByDate === "des" ? -1 : null;
@@ -55,23 +55,23 @@ export function getAllProjects(req, res) {
       let limit = req.query?.limit;
       limit = limit === "all" ? null : parseInt(limit) ? parseInt(limit) : 5;
 
-      Project.find()
+      Blog.find()
          .sort({ postedOn: sortByDate })
          .sort({ viewCount: sortByVC })
          .limit(limit)
-         .then(projects => {
-            if (projects.length === 0) {
+         .then(blogs => {
+            if (blogs.length === 0) {
                return errorResponse(
                   res,
-                  "No projects found :(",
-                  "No projects found or an error occured while retrieving data :(",
+                  "No blogs found :(",
+                  "No blogs found or an error occured while retrieving data :(",
                   1,
                   404,
                );
             }
-            return successResponse(res, "Projects list :)", null, 2, 200, {
-               count: projects.length,
-               data: projects,
+            return successResponse(res, "Blogs list :)", null, 2, 200, {
+               count: blogs.length,
+               data: blogs,
             });
          })
          .catch(error => {
@@ -96,28 +96,28 @@ export function getAllProjects(req, res) {
    }
 }
 
-// Fetch one specific project
-export function getProject(req, res) {
+// Fetch one specific blog
+export function getBlog(req, res) {
    try {
       const id = req.params?.id;
-      Project.findById(id)
-         .then(project => {
-            if (!project) {
+      Blog.findById(id)
+         .then(blog => {
+            if (!blog) {
                return errorResponse(
                   res,
-                  "Project not found :(",
-                  `Project with id: ${id} not found :(`,
+                  "Blog not found :(",
+                  `Blog with id: ${id} not found :(`,
                   6,
                   404,
                );
             }
 
             // MD to HTML (Temp)
-            const mkdn = fs.readFileSync(project.descriptionMD, "utf8");
-            project.descriptionMD = mkdn;
+            const mkdn = fs.readFileSync(blog.descriptionMD, "utf8");
+            blog.descriptionMD = mkdn;
 
-            return successResponse(res, "Project details :)", null, 7, 200, {
-               data: project,
+            return successResponse(res, "Blog details :)", null, 7, 200, {
+               data: blog,
             });
          })
          .catch(error => {
@@ -142,61 +142,48 @@ export function getProject(req, res) {
    }
 }
 
-// Create new project
-export function newProject(req, res) {
+// Create new blog
+export function newBlog(req, res) {
    try {
       const {
          author,
          carousol,
-         codeName,
+         slug,
          description,
-         endDate,
          isVisible,
-         license,
-         links,
+         tags,
          position,
-         projectID,
-         startDate,
-         status,
+         blogID,
          subtitle,
          thumbnail,
-         technologies,
          title,
-         version,
       } = req.body;
 
       const descriptionMD = !req.file
          ? null
-         : `uploads/projects/${req.file?.filename}`;
+         : `uploads/blogs/${req.file?.filename}`;
 
-      const parsedLinks = JSON.parse(`[${links}]`);
-      const parsedTechnologies = JSON.parse(`[${technologies}]`);
+      const parsedTags = JSON.parse(`[${tags}]`);
 
-      const newProjectData = {
+      const newBlogData = {
          author,
          carousol,
-         codeName,
+         slug,
          description,
          descriptionMD,
-         endDate,
          isVisible,
-         license,
-         links: parsedLinks,
+         tags: parsedTags,
          position,
-         projectID,
-         startDate,
-         status,
+         blogID,
          subtitle,
          thumbnail,
-         technologies: parsedTechnologies,
          title,
-         version,
       };
-      new Project(newProjectData)
+      new Blog(newBlogData)
          .save()
-         .then(project => {
-            return successResponse(res, "Project saved :)", null, 11, 201, {
-               data: project,
+         .then(blog => {
+            return successResponse(res, "Blog saved :)", null, 11, 201, {
+               data: blog,
             });
          })
          .catch(error => {
@@ -221,56 +208,49 @@ export function newProject(req, res) {
    }
 }
 
-// Update project
-export function updateProject(req, res) {
+// Update blog
+export function updateBlog(req, res) {
    try {
       const id = req.params?.id;
       const descriptionMD = !req.file
          ? null
-         : `uploads/projects/${req.file?.filename}`;
+         : `uploads/blogs/${req.file?.filename}`;
 
-      const parsedLinks = JSON.parse(`[${req.body?.links}]`);
-      const parsedTechnologies = JSON.parse(`[${req.body?.technologies}]`);
+      const parsedTags = JSON.parse(`[${req.body?.tags}]`);
 
       const updateData = {
          author: req.body?.author,
          carousol: req.body?.carousol,
-         codeName: req.body?.codeName,
+         slug: req.body?.slug,
          description: req.body?.description,
          descriptionMD: descriptionMD,
-         endDate: req.body?.endDate,
          isVisible: req.body?.isVisible,
-         license: req.body?.license,
-         links: parsedLinks,
+         tags: parsedTags,
          position: req.body?.position,
-         projectID: req.body?.projectID,
-         startDate: req.body?.startDate,
-         status: req.body?.status,
+         blogID: req.body?.blogID,
          subtitle: req.body?.subtitle,
          thumbnail: req.body?.thumbnail,
-         technologies: parsedTechnologies,
          title: req.body?.title,
-         version: req.body?.version,
       };
 
-      Project.findByIdAndUpdate(id, updateData, { new: true })
-         .then(updatedProject => {
-            if (!updatedProject) {
+      Blog.findByIdAndUpdate(id, updateData, { new: true })
+         .then(updatedBlog => {
+            if (!updatedBlog) {
                return errorResponse(
                   res,
-                  "Project not found :(",
-                  "The specified project does not exist :(",
+                  "Blog not found :(",
+                  "The specified blog does not exist :(",
                   14,
                   404,
                );
             }
             return successResponse(
                res,
-               "Project updated successfully :)",
+               "Blog updated successfully :)",
                null,
                15,
                200,
-               { data: updatedProject },
+               { data: updatedBlog },
             );
          })
          .catch(error => {
@@ -293,15 +273,15 @@ export function updateProject(req, res) {
    }
 }
 
-// Delete project
-export function deleteProject(req, res) {
+// Delete blog
+export function deleteBlog(req, res) {
    try {
       if (req.query.all === "true") {
-         Project.deleteMany({})
+         Blog.deleteMany({})
             .then(() => {
                return successResponse(
                   res,
-                  "All projects deleted successfully :)",
+                  "All blogs deleted successfully :)",
                   null,
                   18,
                   200,
@@ -318,24 +298,24 @@ export function deleteProject(req, res) {
             });
       } else {
          const id = req.params.id;
-         Project.findByIdAndRemove(id)
-            .then(deletedProject => {
-               if (!deletedProject) {
+         Blog.findByIdAndRemove(id)
+            .then(deletedBlog => {
+               if (!deletedBlog) {
                   return errorResponse(
                      res,
-                     "Project not found.",
-                     "The specified project does not exist.",
+                     "Blog not found.",
+                     "The specified blog does not exist.",
                      20,
                      404,
                   );
                }
                return successResponse(
                   res,
-                  "Project deleted successfully.",
+                  "Blog deleted successfully.",
                   null,
                   21,
                   200,
-                  { data: deletedProject },
+                  { data: deletedBlog },
                );
             })
             .catch(error => {
