@@ -5,7 +5,7 @@ import multer from "multer";
 const storage = multer.diskStorage({
    destination: function (req, file, callback) {
       // console.log(req.originalUrl);
-      if (req.originalUrl.startsWith("/api/portfolio/base/")) {
+      if (req.originalUrl.startsWith("/api/portfolio/bases/")) {
          callback(null, "uploads/bases/introduction/");
       } else if (req.originalUrl.startsWith("/api/portfolio/projects/")) {
          callback(null, "uploads/projects/");
