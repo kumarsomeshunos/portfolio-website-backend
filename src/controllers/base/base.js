@@ -3,6 +3,7 @@ import Base from "./../../models/base/base.js";
 import { liveMoviesAndShows } from "../../services/plex/liveMoviesAndShows.js";
 import { deckMoviesAndShows } from "../../services/plex/deckMoviesAndShows.js";
 import { historyMoviesAndShows } from "../../services/plex/historyMoviesAndShows.js";
+import { lastfm } from "./../../services/lastfm/lastfm.js";
 
 // MD to HTML ([temp] requirements)
 import fs from "fs";
@@ -63,6 +64,8 @@ export async function getAllBases(req, res) {
       //    }
       // }
       let plexData = null;
+      // Fetch lastfm data
+      const lastfmData = await lastfm(10);
       // Spits out only one base (the latest one) if parameter is set to all then it spits out all the bases
       let sortByDate = req.query?.sortByDate;
       sortByDate = sortByDate === "asc" ? 1 : sortByDate === "des" ? -1 : -1;
@@ -91,6 +94,7 @@ export async function getAllBases(req, res) {
                count: bases.length,
                data: bases,
                plexData: plexData,
+               lastfmData: lastfmData,
             });
          })
          .catch(error => {
@@ -128,6 +132,8 @@ export async function getBase(req, res) {
       //    }
       // }
       let plexData = null;
+      // Fetch lastfm data
+      const lastfmData = await lastfm(10);
       Base.findById(id)
          .then(base => {
             if (!base) {
@@ -147,6 +153,7 @@ export async function getBase(req, res) {
             return successResponse(res, "Base details :)", null, 37, 200, {
                data: base,
                plexData: plexData,
+               lastfmData: lastfmData,
             });
          })
          .catch(error => {
