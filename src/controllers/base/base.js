@@ -53,17 +53,16 @@ const successResponse = (
 export async function getAllBases(req, res) {
    try {
       // Fetch plex data
-      // let plexData = await liveMoviesAndShows();
-      // if (!plexData) {
-      //    plexData = await deckMoviesAndShows();
-      //    if (!plexData) {
-      //       plexData = await historyMoviesAndShows();
-      //       if(!plexData) {
-      //          plexData = null;
-      //       }
-      //    }
-      // }
-      let plexData = null;
+      let plexData = await liveMoviesAndShows();
+      if (!plexData) {
+         plexData = await deckMoviesAndShows();
+         if (!plexData) {
+            plexData = await historyMoviesAndShows();
+            if (!plexData) {
+               plexData = null;
+            }
+         }
+      }
       // Fetch lastfm data
       const lastfmData = await lastfm(10);
       // Spits out only one base (the latest one) if parameter is set to all then it spits out all the bases
@@ -124,14 +123,13 @@ export async function getBase(req, res) {
    try {
       const id = req.params?.id;
       // Fetch plex data
-      // let plexData = await liveMoviesAndShows();
-      // if (!plexData) {
-      //    plexData = await deckMoviesAndShows();
-      //    if (!plexData) {
-      //       plexData = await historyMoviesAndShows();
-      //    }
-      // }
-      let plexData = null;
+      let plexData = await liveMoviesAndShows();
+      if (!plexData) {
+         plexData = await deckMoviesAndShows();
+         if (!plexData) {
+            plexData = await historyMoviesAndShows();
+         }
+      }
       // Fetch lastfm data
       const lastfmData = await lastfm(10);
       Base.findById(id)
