@@ -95,7 +95,9 @@ export async function historyMoviesAndShows() {
          if (plexMetadata.type === "movie" || plexMetadata.type === "episode") {
             let plexMoviesAndShowsData = processMetadata(plexMetadata);
             let tmdbData = await tmdb(
-               plexMoviesAndShowsData.title,
+               plexMetadata.type === "movie"
+                  ? plexMoviesAndShowsData.title
+                  : plexMoviesAndShowsData.grandparentTitle,
                plexMetadata.type,
             );
             plexMoviesAndShowsData.backdropPath = `${TMDBImageBaseUrl}/t/p/original${tmdbData?.backdrop_path}`;
