@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function tmdb(title) {
+export async function tmdb(title, type) {
    // Variables
    const TMDBAuthKey = process.env?.TMDB_AUTHORIZATION_KEY;
    const TMDBBaseUrl = process.env?.TMDB_API_BASE_URL;
@@ -13,10 +13,17 @@ export async function tmdb(title) {
    };
 
    try {
-      const response = await axios.get(
-         `${TMDBBaseUrl}/search/movie?query=${title}&include_adult=false&language=en-US&page=1`,
-         { headers: TMDBHeaders },
-      );
+      if (type == "movie") {
+         const response = await axios.get(
+            `${TMDBBaseUrl}/search/movie?query=${title}&include_adult=false&language=en-US&page=1`,
+            { headers: TMDBHeaders },
+         );
+      } else {
+         const response = await axios.get(
+            `${TMDBBaseUrl}/search/tv?query=${title}&include_adult=false&language=en-US&page=1`,
+            { headers: TMDBHeaders },
+         );
+      }
 
       const tmdbData = response.data.results[0];
       return tmdbData;

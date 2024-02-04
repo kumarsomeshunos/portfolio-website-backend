@@ -91,7 +91,10 @@ export async function liveMoviesAndShows() {
 
          if (plexMetadata.type === "movie" || plexMetadata.type === "episode") {
             let plexMoviesAndShowsData = processMetadata(plexMetadata);
-            let tmdbData = await tmdb(plexMoviesAndShowsData.title);
+            let tmdbData = await tmdb(
+               plexMoviesAndShowsData.title,
+               plexMoviesAndShowsData.type,
+            );
             plexMoviesAndShowsData.backdropPath = `${TMDBImageBaseUrl}/t/p/original${tmdbData?.backdrop_path}`;
             plexMoviesAndShowsData.posterPath = `${TMDBImageBaseUrl}/t/p/original${tmdbData?.poster_path}`;
             plexMoviesAndShowsData.id = tmdbData?.id;
