@@ -23,10 +23,10 @@ then
     echo "Running in development mode"
     # echo "Setting up the type for development mode"
     # sed -i "${line_number}s/.*/${dev_type}/" "$file"
-    npm run dev
+    # npm run dev
 else
     echo "Running in production mode"
     # echo "Setting up the type for production mode"
     # sed -i "${line_number}s/.*/${prod_type}/" "$file"
-    npm run run_babel
+    # npm run run_babel
 fi
