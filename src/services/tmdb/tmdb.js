@@ -12,14 +12,17 @@ export async function tmdb(title, type) {
       Accept: "application/json",
    };
 
+   // Processors
+   let response = null;
+
    try {
       if (type == "movie") {
-         const response = await axios.get(
+         response = await axios.get(
             `${TMDBBaseUrl}/search/movie?query=${title}&include_adult=false&language=en-US&page=1`,
             { headers: TMDBHeaders },
          );
       } else {
-         const response = await axios.get(
+         response = await axios.get(
             `${TMDBBaseUrl}/search/tv?query=${title}&include_adult=false&language=en-US&page=1`,
             { headers: TMDBHeaders },
          );
