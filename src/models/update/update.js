@@ -18,7 +18,7 @@ const updateSchema = new mongoose.Schema({
    version: {
       type: String,
       required: true,
-      maxlength: 40,
+      maxlength: 50,
    },
    // Title
    title: {

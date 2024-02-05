@@ -19,7 +19,7 @@ const projectSchema = new mongoose.Schema({
          type: String,
          required: true,
          default: "Somesh Kumar",
-         maxlength: 20,
+         maxlength: 50,
       },
    ],
    // Store caruousol images path in an array
@@ -34,13 +34,13 @@ const projectSchema = new mongoose.Schema({
    codeName: {
       type: String,
       required: true,
-      maxlength: 20,
+      maxlength: 50,
    },
    // Description of the project (shown in card)
    description: {
       type: String,
       required: true,
-      maxlength: 100,
+      maxlength: 500,
    },
    // Markdown file location
    descriptionMD: {
@@ -63,7 +63,7 @@ const projectSchema = new mongoose.Schema({
    license: {
       type: String,
       required: true,
-      maxlength: 20,
+      maxlength: 50,
    },
    // Key-value pairs of name of the site and link of the site
    // E.g. key: github value: github.com
@@ -104,14 +104,14 @@ const projectSchema = new mongoose.Schema({
    // Current status of the project
    status: {
       type: String,
-      enum: ["completed", "working"],
+      enum: ["Completed", "Working"],
       required: true,
-      default: "working",
+      default: "Completed",
    },
    // Subtitle
    subtitle: {
       type: String,
-      maxlength: 40,
+      maxlength: 100,
       required: false,
    },
    // Location of the image of card
@@ -132,7 +132,7 @@ const projectSchema = new mongoose.Schema({
    title: {
       type: String,
       required: true,
-      maxlength: 30,
+      maxlength: 100,
    },
    // Updated on date
    updatedOn: {
@@ -144,7 +144,7 @@ const projectSchema = new mongoose.Schema({
    version: {
       type: String,
       required: true,
-      maxlength: 10,
+      maxlength: 50,
    },
    // View count of the project (automatic)
    viewCount: {

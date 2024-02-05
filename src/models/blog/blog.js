@@ -19,7 +19,7 @@ const blogSchema = new mongoose.Schema({
          type: String,
          required: true,
          default: "Somesh Kumar",
-         maxlength: 20,
+         maxlength: 50,
       },
    ],
    // Store caruousol images path in an array
@@ -34,13 +34,13 @@ const blogSchema = new mongoose.Schema({
    slug: {
       type: String,
       required: true,
-      maxlength: 50,
+      maxlength: 100,
    },
    // Description of the blog (shown in card)
    description: {
       type: String,
       required: true,
-      maxlength: 100,
+      maxlength: 500,
    },
    // Markdown file location
    descriptionMD: {
@@ -88,7 +88,7 @@ const blogSchema = new mongoose.Schema({
    // Subtitle
    subtitle: {
       type: String,
-      maxlength: 40,
+      maxlength: 100,
       required: false,
    },
    // Location of the image of card
@@ -101,7 +101,7 @@ const blogSchema = new mongoose.Schema({
    title: {
       type: String,
       required: true,
-      maxlength: 30,
+      maxlength: 100,
    },
    // Updated on date
    updatedOn: {
