@@ -4,11 +4,11 @@ import mongoose from "mongoose";
 const keyValuePairSchema = new mongoose.Schema({
    key: {
       type: String,
-      required: true,
+      required: false,
    },
    value: {
       type: mongoose.Schema.Types.Mixed,
-      required: true,
+      required: false,
    },
 });
 
@@ -52,6 +52,12 @@ const projectSchema = new mongoose.Schema({
    endDate: {
       type: Date,
       required: false,
+   },
+   // Featured project thumnail
+   featuredThumbnail: {
+      type: String,
+      required: false,
+      maxlength: 200,
    },
    // Should it be visible in projects tab?
    isVisible: {

@@ -48,6 +48,12 @@ const blogSchema = new mongoose.Schema({
       required: false,
       maxlength: 200,
    },
+   // Featured project thumnail
+   featuredThumbnail: {
+      type: String,
+      required: false,
+      maxlength: 200,
+   },
    // Should it be visible in blogs tab?
    isVisible: {
       type: Boolean,
