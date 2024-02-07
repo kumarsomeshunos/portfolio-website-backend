@@ -56,12 +56,16 @@ export function contact(req, res) {
          })
          .then(response => {
             console.log(response);
-            return successResponse(
-               res,
-               "Email sent successfully :)",
-               response.message,
-               3,
-               200,
+            // return successResponse(
+            //    res,
+            //    "Email sent successfully :)",
+            //    response.message,
+            //    3,
+            //    200,
+            // );
+
+            return res.redirect(
+               "https://beta.kumarsomesh.in/contact?success=true",
             );
          })
          .catch(error => {
