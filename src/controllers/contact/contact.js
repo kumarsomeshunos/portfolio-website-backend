@@ -41,7 +41,7 @@ const successResponse = (
 
 // Contact form
 
-export function contact(req, res) {
+export async function contact(req, res) {
    try {
       const { name, email, message } = req.body;
       console.log(name, email, message);
@@ -50,7 +50,7 @@ export function contact(req, res) {
          process.env?.POSTMARK_EMAIL_FROM,
          process.env?.POSTMARK_EMAIL_TO,
       );
-      let client = new postmark.ServerClient(process.env?.POSTMARK_KEY);
+      let client = await new postmark.ServerClient(process.env?.POSTMARK_KEY);
 
       client
          .sendEmail({
