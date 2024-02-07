@@ -1,4 +1,4 @@
-import postmark from "postmark";
+import { ServerClient } from "postmark";
 
 // Helper function (success and error)
 const errorResponse = (
@@ -41,16 +41,11 @@ const successResponse = (
 
 // Contact form
 
-export async function contact(req, res) {
+export function contact(req, res) {
    try {
       const { name, email, message } = req.body;
       console.log(name, email, message);
-      console.log(
-         process.env?.POSTMARK_KEY,
-         process.env?.POSTMARK_EMAIL_FROM,
-         process.env?.POSTMARK_EMAIL_TO,
-      );
-      let client = await new postmark.ServerClient(process.env?.POSTMARK_KEY);
+      let client = new ServerClient(process.env?.POSTMARK_KEY);
 
       client
          .sendEmail({
