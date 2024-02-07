@@ -170,8 +170,10 @@ export function newProject(req, res) {
          ? null
          : `uploads/projects/${req.file?.filename}`;
 
-      const parsedLinks = JSON.parse(`[${links}]`);
-      const parsedTechnologies = JSON.parse(`[${technologies}]`);
+      const parsedLinks = links ? JSON.parse(`[${links}]`) : null;
+      const parsedTechnologies = technologies
+         ? JSON.parse(`[${technologies}]`)
+         : null;
 
       const newProjectData = {
          author,
