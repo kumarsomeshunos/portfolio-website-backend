@@ -180,6 +180,7 @@ export async function getBase(req, res) {
 export function newBase(req, res) {
    try {
       const {
+         notificationMessage,
          greetings,
          name,
          displayProfile,
@@ -206,6 +207,7 @@ export function newBase(req, res) {
       const parsedSocialLinks = JSON.parse(`[${socialLinks}]`);
 
       const newBaseData = new Base({
+         notificationMessage,
          navbarLinks: parsedNavbarLinks,
          greetings,
          name,
@@ -271,6 +273,7 @@ export function updateBase(req, res) {
       const parsedSocialLinks = JSON.parse(`[${req.body?.socialLinks}]`);
 
       const updateData = {
+         notificationMessage: req.body?.notificationMessage,
          greetings: req.body?.greetings,
          name: req.body?.name,
          displayProfile: req.body?.displayProfile,

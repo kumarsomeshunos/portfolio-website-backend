@@ -13,6 +13,12 @@ const keyValuePairSchema = new mongoose.Schema({
 });
 
 const baseSchema = new mongoose.Schema({
+   // Notification Message
+   notificationMessage: {
+      type: String,
+      required: false,
+      maxlength: 500,
+   },
    // Navbar
    navbarLinks: [
       {
