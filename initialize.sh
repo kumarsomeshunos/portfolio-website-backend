@@ -10,7 +10,7 @@ echo "Initializing the server with necessary files and folders"
 
 # Fetching zip file from server
 echo "Fetching zip file from server"
-wget "http://home.kumarsomesh.in/v3/file?token=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhvbWUubXBiZHAiLCJpZCI6MSwiaXNzIjoiY2FzYW9zIiwiZXhwIjoxNzA3MjQ5NzMwLCJuYmYiOjE3MDcyMzg5MzAsImlhdCI6MTcwNzIzODkzMH0.VTTsvNJftqeQA0VfBhWf802kuVWGze8IxdSEGAHd2Sq36boEL7ogYnLLd1dOC-toBjtWWYr0HVgRMveY7Ifhqg&path=%2Fvar%2Flib%2Fplexmediaserver%2FSeagate%2Fuploads.zip"
+wget "http://home.kumarsomesh.in/v3/file?token=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhvbWUubXBiZHAiLCJpZCI6MSwiaXNzIjoiY2FzYW9zIiwiZXhwIjoxNzA4MzQ0OTc2LCJuYmYiOjE3MDgzMzQxNzYsImlhdCI6MTcwODMzNDE3Nn0.eA50XBzvvY6GtxYY0733HzTMy_LAMrgTgZmczyvF2fA9B_JDGdIZXBZBrnGvwznjhyd_iDId7TgUo-V2-DjWqA&path=%2Fvar%2Flib%2Fplexmediaserver%2FSeagate%2Fuploads.zip"
 
 # Unzipping the file
 echo "Unzipping the file"

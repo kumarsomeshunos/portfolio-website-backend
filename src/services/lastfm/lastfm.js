@@ -16,11 +16,13 @@ export async function lastfm(limit) {
          item.image = item.image[3]["#text"];
          item.artist = item.artist["#text"];
          item.album = item.album["#text"];
-         item.date = item.date["#text"];
+         item.date ? (item.date = item.date["#text"]) : (item.date = null);
+         item["@attr"] ? (item["@attr"] = true) : (item["@attr"] = false);
          delete item["mbid"];
          delete item["streamable"];
          return item;
       });
+      console.log(lastfmData);
       return lastfmData;
    } catch (error) {
       return null;
