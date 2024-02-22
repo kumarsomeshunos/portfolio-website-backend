@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export async function tmdb(title, type) {
-   console.log(type, title);
    // Variables
    const TMDBAuthKey = process.env?.TMDB_AUTHORIZATION_KEY;
    const TMDBBaseUrl = process.env?.TMDB_API_BASE_URL;

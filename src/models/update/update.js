@@ -14,6 +14,13 @@ const updateSchema = new mongoose.Schema({
       default: Date.now,
       immutable: true,
    },
+   // Type of update (backend or frontend)
+   type: {
+      type: String,
+      required: true,
+      enum: ["backend", "frontend"],
+      default: "frontend",
+   },
    // Version of the site
    version: {
       type: String,

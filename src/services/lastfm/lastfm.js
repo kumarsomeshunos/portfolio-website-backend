@@ -22,7 +22,6 @@ export async function lastfm(limit) {
          delete item["streamable"];
          return item;
       });
-      console.log(lastfmData);
       return lastfmData;
    } catch (error) {
       return null;

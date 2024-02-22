@@ -4,6 +4,7 @@ import { liveMoviesAndShows } from "../../services/plex/liveMoviesAndShows.js";
 import { deckMoviesAndShows } from "../../services/plex/deckMoviesAndShows.js";
 import { historyMoviesAndShows } from "../../services/plex/historyMoviesAndShows.js";
 import { lastfm } from "./../../services/lastfm/lastfm.js";
+import { googlebooks } from "../../services/googlebooks/googlebooks.js";
 
 // MD to HTML ([temp] requirements)
 import fs from "fs";
@@ -65,6 +66,8 @@ export async function getAllBases(req, res) {
       }
       // Fetch lastfm data
       const lastfmData = await lastfm(10);
+      // Fetch googlebooks data
+      const googlebooksData = await googlebooks();
       // Spits out only one base (the latest one) if parameter is set to all then it spits out all the bases
       let sortByDate = req.query?.sortByDate;
       sortByDate = sortByDate === "asc" ? 1 : sortByDate === "des" ? -1 : -1;
@@ -94,6 +97,7 @@ export async function getAllBases(req, res) {
                data: bases,
                plexData: plexData,
                lastfmData: lastfmData,
+               googlebooksData: googlebooksData,
             });
          })
          .catch(error => {
@@ -132,6 +136,8 @@ export async function getBase(req, res) {
       }
       // Fetch lastfm data
       const lastfmData = await lastfm(10);
+      // Fetch googlebooks data
+      const googlebooksData = await googlebooks();
       Base.findById(id)
          .then(base => {
             if (!base) {
@@ -152,6 +158,7 @@ export async function getBase(req, res) {
                data: base,
                plexData: plexData,
                lastfmData: lastfmData,
+               googlebooksData: googlebooksData,
             });
          })
          .catch(error => {

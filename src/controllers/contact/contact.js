@@ -44,7 +44,6 @@ const successResponse = (
 export function contact(req, res) {
    try {
       const { name, email, message } = req.body;
-      console.log(name, email, message);
       let client = new ServerClient(process.env?.POSTMARK_KEY);
 
       client
@@ -55,7 +54,6 @@ export function contact(req, res) {
             TextBody: message,
          })
          .then(response => {
-            console.log(response);
             // return successResponse(
             //    res,
             //    "Email sent successfully :)",
