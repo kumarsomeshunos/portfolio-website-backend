@@ -1,4 +1,5 @@
 import axios from "axios";
+import { spotify } from "../spotify/spotify.js";
 
 export async function lastfm(limit) {
    // Variables
@@ -20,9 +21,9 @@ export async function lastfm(limit) {
          item["@attr"] ? (item["@attr"] = true) : (item["@attr"] = false);
          delete item["mbid"];
          delete item["streamable"];
-         return item;
       });
-      return lastfmData;
+      const spotifyData = await spotify(lastfmData[0].name);
+      return { lastfmData, spotifyData };
    } catch (error) {
       return null;
    }
