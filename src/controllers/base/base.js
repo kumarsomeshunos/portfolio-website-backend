@@ -5,6 +5,7 @@ import { deckMoviesAndShows } from "../../services/plex/deckMoviesAndShows.js";
 import { historyMoviesAndShows } from "../../services/plex/historyMoviesAndShows.js";
 import { lastfm } from "./../../services/lastfm/lastfm.js";
 import { googlebooks } from "../../services/googlebooks/googlebooks.js";
+import { randomQuote } from "../../services/quote/randomQuote.js";
 
 // MD to HTML ([temp] requirements)
 import fs from "fs";
@@ -68,6 +69,8 @@ export async function getAllBases(req, res) {
       const lastfmData = await lastfm(10);
       // Fetch googlebooks data
       const googlebooksData = await googlebooks();
+      // Fetch random quote from own db
+      const quote = await randomQuote();
       // Spits out only one base (the latest one) if parameter is set to all then it spits out all the bases
       let sortByDate = req.query?.sortByDate;
       sortByDate = sortByDate === "asc" ? 1 : sortByDate === "des" ? -1 : -1;
@@ -95,6 +98,7 @@ export async function getAllBases(req, res) {
             return successResponse(res, "Bases list :)", null, 2, 200, {
                count: bases.length,
                data: bases,
+               quote: quote,
                plexData: plexData,
                lastfmData: lastfmData,
                googlebooksData: googlebooksData,

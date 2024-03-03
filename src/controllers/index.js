@@ -5,6 +5,7 @@ import * as baseController from "./base/base.js";
 import * as blogController from "./blog/blog.js";
 import * as updateController from "./update/update.js";
 import * as contactController from "./contact/contact.js";
+import * as quoteController from "./quote/quote.js";
 
 const controller = {
    projectController,
@@ -13,6 +14,7 @@ const controller = {
    blogController,
    updateController,
    contactController,
+   quoteController,
 };
 
 export default controller;

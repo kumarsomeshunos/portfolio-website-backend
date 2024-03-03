@@ -12,6 +12,7 @@ import BaseRouter from "./routes/base/base.js";
 import BlogRouter from "./routes/blog/blog.js";
 import UpdateRouter from "./routes/update/update.js";
 import ContactRouter from "./routes/contact/contact.js";
+import QuoteRouter from "./routes/quote/quote.js";
 
 // Config
 process.env.NODE_ENV = "development";
@@ -76,6 +77,7 @@ async function main() {
    app.use("/api/portfolio/blogs", BlogRouter);
    app.use("/api/portfolio/updates", UpdateRouter);
    app.use("/api/portfolio/contact", ContactRouter);
+   app.use("/api/portfolio/quotes", QuoteRouter);
 
    app.get("/healthcheck", (req, res) => {
       res.status(200).json({ status: "OK :)" });
