@@ -1,1 +1,1 @@
-web npm run run_babel
+web: npm run run_babel
