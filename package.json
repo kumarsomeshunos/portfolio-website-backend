@@ -3,6 +3,9 @@
    "version": "1.0.0",
    "description": "Backend for portfolio website of Somesh Kumar",
    "main": "src/index.js",
+   "engines": {
+      "node": "20.11.1"
+   },
    "scripts": {
       "build": "./node_modules/.bin/babel src --out-dir lib",
       "dev": "nodemon src/index.js",
