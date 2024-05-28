@@ -1,4 +1,5 @@
 // All imports
+import markdownToHtml from "../../helpers/markdown.js";
 import Blog from "./../../models/blog/blog.js";
 
 // MD to HTML ([temp] requirements)
@@ -99,37 +100,72 @@ export function getAllBlogs(req, res) {
 // Fetch one specific blog
 export function getBlog(req, res) {
    try {
-      const id = req.params?.id;
-      Blog.findById(id)
-         .then(blog => {
-            if (!blog) {
+      const objectIdRegex = /^[0-9a-fA-F]{24}$/;
+      if (objectIdRegex.test(req.params?.id)) {
+         const id = req.params?.id;
+         Blog.findById(id)
+            .then(blog => {
+               if (!blog) {
+                  return errorResponse(
+                     res,
+                     "Blog not found :(",
+                     `Blog with id: ${id} not found :(`,
+                     6,
+                     404,
+                  );
+               }
+
+               // MD to HTML (Temp)
+               const mkdn = fs.readFileSync(blog.descriptionMD, "utf8");
+               blog.descriptionMD = markdownToHtml(mkdn);
+
+               return successResponse(res, "Blog details :)", null, 7, 200, {
+                  data: blog,
+               });
+            })
+            .catch(error => {
                return errorResponse(
                   res,
-                  "Blog not found :(",
-                  `Blog with id: ${id} not found :(`,
-                  6,
-                  404,
+                  "Casting failed :(",
+                  error.message,
+                  8,
+                  500,
+                  { fatal: true },
                );
-            }
-
-            // MD to HTML (Temp)
-            const mkdn = fs.readFileSync(blog.descriptionMD, "utf8");
-            blog.descriptionMD = mkdn;
-
-            return successResponse(res, "Blog details :)", null, 7, 200, {
-               data: blog,
             });
-         })
-         .catch(error => {
-            return errorResponse(
-               res,
-               "Casting failed :(",
-               error.message,
-               8,
-               500,
-               { fatal: true },
-            );
-         });
+      } else {
+         const slug = req.params?.id;
+         Blog.findOne({ slug: slug })
+            .then(blog => {
+               if (!blog) {
+                  return errorResponse(
+                     res,
+                     "Blog not found :(",
+                     `Blog with slug: ${slug} not found :(`,
+                     6,
+                     404,
+                  );
+               }
+
+               // MD to HTML (Temp)
+               const mkdn = fs.readFileSync(blog.descriptionMD, "utf8");
+               blog.descriptionMD = markdownToHtml(mkdn);
+
+               return successResponse(res, "Blog details :)", null, 7, 200, {
+                  data: blog,
+               });
+            })
+            .catch(error => {
+               return errorResponse(
+                  res,
+                  "Casting failed :(",
+                  error.message,
+                  8,
+                  500,
+                  { fatal: true },
+               );
+            });
+      }
    } catch (error) {
       return errorResponse(
          res,

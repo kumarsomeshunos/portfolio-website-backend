@@ -1,4 +1,5 @@
 // All imports
+import markdownToHtml from "../../helpers/markdown.js";
 import Project from "./../../models/project/project.js";
 
 // MD to HTML ([temp] requirements)
@@ -114,7 +115,7 @@ export function getProject(req, res) {
 
             // MD to HTML (Temp)
             const mkdn = fs.readFileSync(project.descriptionMD, "utf8");
-            project.descriptionMD = mkdn;
+            project.descriptionMD = markdownToHtml(mkdn);
 
             return successResponse(res, "Project details :)", null, 7, 200, {
                data: project,
